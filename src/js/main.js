@@ -22,7 +22,7 @@ for (let i = 0; i < 5; i++){
 const divJugando = document.getElementById("jugando");
 const divResultado = document.getElementById("resultado");
 const inputUsuario = document.getElementById("usuario");
-const inputPassword = document.getElementById("password");
+const inputPassword = document.getElementById("passwd");
 
 
 //Inicialización de bototes
@@ -31,6 +31,7 @@ const botonStart = document.getElementById("start");
 const botonConsultar = document.getElementById("botonConsultar");
 const botonCerrarSesion = document.getElementById("botonCerrarSesion");
 
+//Variables
 
 
 
@@ -76,6 +77,7 @@ botonStart.addEventListener('click', function(event){
         } else {
             //saca bola y lo pinta en JUGANDO
             bolaSacada = sacarBola();
+            
             divJugando.innerText = bolaSacada;
     
             //comprobar aciertos y anadir a bolasPremiadas
@@ -83,7 +85,8 @@ botonStart.addEventListener('click', function(event){
                 if (bolaSacada === parseInt(tdArray[i].innerText)){
                     bolasPremiadas.push(bolaSacada);
                     pintarAciertos(tdArray[i]);
-                    contadorAciertosJugador++
+                    contadorAciertosJugador++;
+                    
                 
                 }
         
@@ -92,20 +95,44 @@ botonStart.addEventListener('click', function(event){
        
        
         contadorBolasSacadas++;
+
         
     }, 1000);
 
 
 });
-
+botonPedirCarta.classList.add("invisible");
+botonStart.classList.add("invisible");
+botonCerrarSesion.classList.add("invisible");
 let url = "http://localhost:3000/jugador";
+
 botonConsultar.addEventListener('click', function(event){
-    consultar();
+    consultar(url);
+
+
+});
+
+botonCerrarSesion.addEventListener('click', function(event){
+    cerrarSesion();
+
 });
 
 
 //Comprobación localStorage
 //  1. Información de jugador (parte 2)
+if (localStorage.getItem("jugador")){
+    login();
+} 
+
 
 //  2. Información de partida en juego (parte 3)
 
+
+if (localStorage.getItem("partida")){
+    cargarPartida();
+} else {
+    numerosParaCarton = generarNumerosParaCarton();
+    bolas = _.shuffle(numeros1a90);
+    bolasSacadas = new Array();
+    bolasPremiadas = new Array();
+}

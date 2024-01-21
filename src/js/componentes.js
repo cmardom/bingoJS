@@ -16,8 +16,18 @@ let enJuego = {
     // en caso de interrupción por cierre de la página web.
     // dato1: [],
     // dato2: 0
+
+
+    carton: [],
+    bolas: [],
+    bolasPremiadas: [],
+    bolasSacadas: []
+
+
 }
 
 function enJuego_reset() {
     // Reinicializar las propiedades a valores por defecto.
+
+    
 }

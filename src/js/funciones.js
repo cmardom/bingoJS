@@ -20,14 +20,23 @@ function generarNumerosParaCarton() {
     });
 }
 
-numerosParaCarton = generarNumerosParaCarton();
+
+
+let bolas, bolaSacada, bolasPremiadas;
+
+// if (!localStorage.getItem("partida")){
+//     numerosParaCarton = generarNumerosParaCarton();
+//     bolas = _.shuffle(numeros1a90);
+//     bolasSacadas = new Array();
+//     bolasPremiadas = new Array();
+// } 
 
 //se generan las bolas
-let bolas = _.shuffle(numeros1a90);
+// let bolas = _.shuffle(numeros1a90);
 
-let bolaSacada;
-let bolasSacadas = new Array();
-let bolasPremiadas = new Array();
+// let bolaSacada;
+// let bolasSacadas = new Array();
+// let bolasPremiadas = new Array();
 
 
 function sacarBola(){
@@ -35,6 +44,13 @@ function sacarBola(){
     bolaSacada = bolas.pop();
     //se mete en bolas sacadas
     bolasSacadas.push(bolaSacada);
+    
+    /*localStorage JUGADOR */
+    player = JSON.parse(localStorage.getItem("jugador"));
+    player.resultado = bolasSacadas;
+    localStorage.setItem("jugador", JSON.stringify(player));
+
+
 
     return bolaSacada;
 }
@@ -46,20 +62,19 @@ function pintarAciertos (casilla){
     casilla.classList.add("text-white");
 }
 
+function consultar (url){
+    obtenerJugadores(url).then(players =>{
 
-function consultar (){
-    obtenerJugadores().then(jugadores =>{
+        players.forEach(player=> {
 
-        jugadores.forEach(jugador=> {
-
-            if (inputUsuario.value==jugador.nombre && inputPassword.value==jugador.passwd){
-                player.id = jugador.id;
-                player.nombre = jugador.nombre;
-                player.resultado = jugador.resultado;
+            if (inputUsuario.value==player.nombre && inputPassword.value==player.passwd){
+                //jugador_cargar(player.id, player.nombre, player.resultado);
+                jugador.nombre = player.nombre;
+                jugador.id = player.id;
+                jugador.resultado = player.resultado;
                 localStorage.setItem("jugador", JSON.stringify(player));
                 login();
-                botonConsultar.classList.add("invisible");
-                //botonCerrar.classList.add("invisible");
+
                 return;
             }
         });
@@ -69,8 +84,54 @@ function consultar (){
 
 function login(){
     player = JSON.parse(localStorage.getItem("jugador"));
-    document.getElementById("nombre_usuario").innerHTML="<h1>"+player.nombre+"</h1>";
-    usuario.classList.add("invisible");
-    contrasena.classList.add("invisible");
+    
+    document.getElementById("saludo").innerHTML="<h1>"+player.nombre+"</h1>";
 
+
+    botonCerrarSesion.classList.remove("invisible");
+    inputPassword.classList.add("invisible");
+    inputUsuario.classList.add("invisible");
+    botonConsultar.classList.add("invisible");
+    botonPedirCarta.classList.remove("invisible");
+    botonStart.classList.remove("invisible");
+   
+
+
+}
+
+function cerrarSesion(){
+    localStorage.removeItem("player");
+    botonCerrarSesion.classList.add("invisible");
+    inputPassword.classList.remove("invisible");
+    inputUsuario.classList.remove("invisible");
+    botonConsultar.classList.remove("invisible");
+    botonPedirCarta.classList.add("invisible");
+    botonStart.classList.add("invisible");
+    document.getElementById("saludo").innerHTML="";
+
+}
+
+function cargarPartida(){
+             /*localStorage PARTIDA */
+   
+        partida = JSON.parse(localStorage.getItem("partida"));
+        enJuego.carton = partida[0],
+        enJuego.bolas = partida[1],
+        enJuego.bolasPremiadas = partida[2],
+        enJuego.bolasSacadas = partida[3]
+
+
+
+        numerosParaCarton= partida[0];
+        bolas = partida[1];
+        bolasSacadas = partida[2];
+        bolasPremiadas = partida[3];
+
+
+
+
+
+
+
+    
 }
